@@ -1,6 +1,9 @@
 package com.gildedrose;
 
 class GildedRose {
+    public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
+    public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
+    public static final String AGED_BRIE = "Aged Brie";
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -22,9 +25,9 @@ class GildedRose {
     }
 
     private void updateInventory(Item item) {
-        if (item.name.equals("Aged Brie")) {
+        if (item.name.equals(AGED_BRIE)) {
             increaseQuality(item);
-        } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+        } else if (item.name.equals(BACKSTAGE_PASSES)) {
             if (item.quality < 50) {
                 item.quality = item.quality + 1;
 
@@ -37,14 +40,14 @@ class GildedRose {
                 }
             }
         } else {
-            if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                decreaseQuality(item);
+            if (!item.name.equals(SULFURAS)) {
+                decQuality(item);
             }
         }
     }
 
     private void updateExpiration(Item item) {
-        if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
+        if (!item.name.equals(SULFURAS)) {
             item.sellIn--;
         }
     }
@@ -55,17 +58,18 @@ class GildedRose {
 
 
     private void processExpired(Item item) {
-        if (item.name.equals("Aged Brie")) {
+        if (item.name.equals(AGED_BRIE)) {
             increaseQuality(item);
-        } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+        } else if (item.name.equals(BACKSTAGE_PASSES)) {
             item.quality = 0;
+        } else if (item.name.equals(SULFURAS)) {
             return;
         } else {
-            decreaseQuality(item);
+            decQuality(item);
         }
     }
 
-    private static void decreaseQuality(Item item) {
+    private static void decQuality(Item item) {
         if (item.quality > 0) {
             item.quality = item.quality - 1;
         }

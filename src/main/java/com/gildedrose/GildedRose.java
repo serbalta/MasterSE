@@ -4,6 +4,8 @@ class GildedRose {
     public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
     public static final String AGED_BRIE = "Aged Brie";
+    public static final String CONJURED = "Conjured";
+
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -25,24 +27,25 @@ class GildedRose {
     }
 
     private void updateInventory(Item item) {
-        if (item.name.equals(AGED_BRIE)) {
-            increaseQuality(item);
-        } else if (item.name.equals(BACKSTAGE_PASSES)) {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1;
+        switch (item.name) {
+            case AGED_BRIE:
+                increaseQuality(item);
+                break;
+            case BACKSTAGE_PASSES:
+                increaseQuality(item);
 
                 if (item.sellIn < 11) {
                     increaseQuality(item);
                 }
-
                 if (item.sellIn < 6) {
                     increaseQuality(item);
                 }
-            }
-        } else {
-            if (!item.name.equals(SULFURAS)) {
-                decQuality(item);
-            }
+                break;
+            default:
+                if (!item.name.equals(SULFURAS)) {
+                    decQuality(item);
+                }
+                break;
         }
     }
 
@@ -58,26 +61,37 @@ class GildedRose {
 
 
     private void processExpired(Item item) {
-        if (item.name.equals(AGED_BRIE)) {
-            increaseQuality(item);
-        } else if (item.name.equals(BACKSTAGE_PASSES)) {
-            item.quality = 0;
-        } else if (item.name.equals(SULFURAS)) {
-            return;
-        } else {
-            decQuality(item);
+        switch (item.name) {
+            case AGED_BRIE:
+                increaseQuality(item);
+                break;
+            case BACKSTAGE_PASSES:
+                item.quality = 0;
+                break;
+            case SULFURAS:
+                return;
+
+            default:
+                if(!item.name.equals(CONJURED)){
+                decQuality(item);
+                }
+                break;
         }
     }
 
     private static void decQuality(Item item) {
-        if (item.quality > 0) {
+        if (item.quality > 0 && !item.name.equals(CONJURED)) {
             item.quality = item.quality - 1;
+        } else {
+            if (item.quality > 0) {
+                item.quality = (item.quality - 2) ;
+            }
         }
     }
 
 
     private static void increaseQuality(Item item) {
-        if (item.quality < 50) {
+        if (item.quality < 50 && !item.name.equals(CONJURED)) {
             item.quality = item.quality + 1;
 
         }

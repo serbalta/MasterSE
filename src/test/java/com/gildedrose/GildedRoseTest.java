@@ -45,6 +45,16 @@ class GildedRoseTest {
     }
 
     @Test
+    void item_quality_degrades_twice_if_conjured() {
+        Item item = new Item("Conjured", -3, 50);
+        GildedRose subject = new GildedRose(new Item[] { item });
+
+        subject.updateInventory();
+
+        assertThat(item.quality).isEqualTo(48);
+    }
+
+    @Test
     void item_quality_degrades_by_one_with_1_day_left() {
         Item item = new Item("Standard Item", 1, 4);
         GildedRose subject = new GildedRose(new Item[] { item });
